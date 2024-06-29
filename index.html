@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="favicon.jpg">
+    <title>Mulalink</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to right, #f5f7fa, #c3cfe2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        /* Navbar Styles */
+        nav {
+            background-color: rgba(0, 255, 0, 1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 10px 20px;
+        }
+
+        nav li {
+            margin-left: 20px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #333;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        nav a:hover {
+            background-color: #ddd;
+        }
+
+        nav .brand-name {
+            color: green;
+            font-weight: bold;
+            font-size: 20px;
+            margin-right: auto;
+        }
+
+        .menubt {
+            display: none;
+        }
+
+        @media (max-width: 800px) {
+            .hidemob {
+                display: none;
+            }
+
+            .menubt {
+                display: block;
+                cursor: pointer;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .sidebar {
+                width: 100%;
+            }
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            height: 100vh;
+            width: 250px;
+            z-index: 999;
+            background-color: rgba(0, 255, 0, 0.9);
+            box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.1);
+            display: none;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-start;
+            font-weight: bold;
+            font-size: 10px;
+        }
+
+        .sidebar li {
+            width: 100%;
+            text-align: left;
+            padding:20px;
+        }
+
+        .sidebar a {
+            width: 100%;
+            padding: 15px 20px;
+            color:white;
+            font-weight:bold;
+            
+          
+        }
+        .sidebar a:hover{
+          color:blue;
+        }
+
+        /* Container Styles */
+        .container {
+            max-width: 900px;
+            height:300vh;
+            margin-top: 100px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            color: #007bff;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .description {
+            margin: 0 20px 20px 20px;
+            text-align: center;
+        }
+
+        /* Carousel Styles */
+        .carousel {
+            position: relative;
+            width: 90%;
+            height: 300px;
+            overflow: hidden;
+            background-color: #f3f3f3;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            display:block;
+            margin:auto;
+        }
+        .carousel:hover{
+          box-shadow:0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .carousel-content {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .carousel-item {
+            min-width: 100%;
+            box-sizing: border-box;
+            padding: 40px;
+            text-align: center;
+            display: none;
+            transition: opacity 0.5s ease-in-out;
+            opacity: 0;
+        }
+
+        .carousel-item.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .carousel-controls {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+        }
+
+        .carousel-control {
+            background-color: rgba(0, 0, 0, 0.5);
+            border: none;
+            color: white;
+            font-size: 24px;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .carousel-control:hover {
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        .carousel-indicators {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+        }
+
+        .indicator {
+            height: 12px;
+            width: 12px;
+            margin: 0 5px;
+            background-color: gray;
+            border-radius: 50%;
+            display: inline-block;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .indicator.active,
+        .indicator:hover {
+            background-color: black;
+        }
+
+        .mentor-link {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .mentor-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .carousel {
+                height: 250px;
+            }
+
+            .carousel-item {
+                padding: 20px;
+            }
+        }
+        .btn-create{
+         display:block;
+          background-color:rgba(0,255,0,1);
+          margin:auto;
+          padding:10px;
+          width:300px;
+          border-radius:5px;
+          border:1px solid gray;
+         
+        }
+        .btn-create a{
+          color:white;
+          text-decoration:none;
+          font-size:1.6rem;
+          font-weight:bold;
+        }
+        .welcome-para,.intro-para{
+          background-color:#f7f7f7;
+          padding:10px;
+          display:block;
+          margin:10px;
+        } 
+        .welcome-para:hover{
+          box-shadow:0 0 15px rgba(0,0,0,0.2)
+        }
+        .photo{
+          display:block;
+          margin-left:38%;
+         
+        }
+        @media (max-width:600px)
+        {
+          .photo{margin-left:5%}
+        }
+        .activate-now{
+          
+         display:block;
+          background: linear-gradient(to right,rgb(241,131,160),rgb(240,82,57));
+          margin:auto;
+          padding:10px;
+          width:300px;
+          border-radius:5px;
+          border:1px solid gray;
+          margin-top:5px;
+         
+        }
+        .activate-now a{
+          color:white;
+          font-size:1.6rem;
+          font-weight:bold;
+          text-decoration:none;
+        }
+        .btn-create a:hover{
+          color:blue;
+        }
+        .moving{
+          font-size:1rem;
+          font-weight:bold;
+          color:rgba(0,255,0,1);
+          padding-top:100px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <ul class="sidebar">
+            <li onclick="hideside()"><a style="font-size:30px;">×</a></li>
+            <li><a href="#">HOME</a></li>
+            <li><a href="#">CREATE ACCOUNT</a></li>
+            <li><a href="#">DEPOSIT & ACTIVATE ACCOUNT</a></li>
+            <li><a href="#">ACTIVATE MANUALLY</a></li>
+            <li><a href="#">GET MENTOR</a></li>
+        </ul>
+        <ul>
+            <li><a><span class="brand-name">MulaLink</span></a></li>
+            <li class="hidemob"><a href="#">CREATE ACCOUNT</a></li>
+            <li class="hidemob"><a href="#">Mula link</a></li>
+            <li class="hidemob"><a href="#">ACTIVATE ACCOUNT</a></li>
+            <li class="hidemob"><a href="#">CONTACT</a></li>
+            <li class="hidemob"><a href="#">Log in</a></li>
+            <li class="menubt" onclick="sideBar()"><a>
+                <svg xmlns="" width="26" height="26" viewBox="0 0 32 32" stroke="currentColor" fill="none" stroke-linejoin="round" stroke-linecap="round" stroke-width="5">
+                    <path d="M 5 5 10 5 20 5 25 5"></path>
+                    <path d="M 5 15 10 15 20 15 25 15"></path>
+                    <path d="M 5 25 10 25 20 25 25 25"></path>
+                </svg>
+            </a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <h4 class="header">How Mulalink agencies works?</h4>
+        <p class="description intro-para">
+            Mulalink allows you to earn money by watching YouTube and TikTok videos. This is a great way to make money while enjoying entertaining content.
+        </p>
+        <div class="photo">
+          <img src="makemoney.jpg" alt="MulaLink">
+        </div>
+        <div class="photo">
+          <img src="mulaLink.jpg" alt="mulaLink">
+        </div>
+        <div class="photo">
+          <img src="mulaLinkflyer.jpg" alt="mulaLinkflyer.jpg">
+        </div>
+
+        <!-- Carousel Items -->
+        <div class="carousel">
+            <div class="carousel-content">
+                <div class="carousel-item active">
+                    <p>“Have been making a lot of money from this platform, the real deal have met so far, very legit, you can reach me whatsapp +254718031210”</p>
+                    <p>- <a href="#" class="mentor-link">Mentor itsvee</a></p>
+                </div>
+                <div class="carousel-item">
+                    <p>“This platform has changed my life for the better. Highly recommended!”</p>
+                    <p>- <a href="#" class="mentor-link">Mentor Jane</a></p>
+                </div>
+                <div class="carousel-item">
+                    <p>“A fantastic service that delivers results. You can contact me at +254712345678.”</p>
+                    <p>- <a href="#" class="mentor-link">Mentor John</a></p>
+                </div>
+                <div class="carousel-item">
+                    <p>“I've never seen anything like it. Truly a game-changer!”</p>
+                    <p>- <a href="#" class="mentor-link">Mentor Lucy</a></p>
+                </div>
+            </div>
+            <div class="carousel-controls">
+                <button class="carousel-control prev" onclick="moveCarousel(-1)">&#10094;</button>
+                <button class="carousel-control next" onclick="moveCarousel(1)">&#10095;</button>
+            </div>
+            <div class="carousel-indicators">
+                <span class="indicator active" onclick="currentSlide(0)"></span>
+                <span class="indicator" onclick="currentSlide(1)"></span>
+                <span class="indicator" onclick="currentSlide(2)"></span>
+                <span class="indicator" onclick="currentSlide(3)"></span>
+            </div>
+        </div>
+        <div class="welcome-para">
+        <p class="description">Welcome to Mulalink,Your primier destination for unlocking online earnings potential.Mulalink offers diverse opportunities for everyone to thrive financially</p>
+        </div>
+        <button class="btn-create" ><a href="">CREATE ACCOUNT</a></button>
+        
+        <button class="activate-now"><a href="">ACTIVATE NOW</a></button>
+        <footer>
+          <marquee class="moving" behavior="smooth" direction="to right">for more info contact mentor Vee whatsapp via:+254</marquee>
+        </footer>
+    </div>
+    
+
+    <script>
+        let slideIndex = 0;
+
+        function showSlide(index) {
+            const slides = document.querySelectorAll('.carousel-item');
+            const indicators = document.querySelectorAll('.indicator');
+            if (index >= slides.length) {
+                slideIndex = 0;
+            } else if (index < 0) {
+                slideIndex = slides.length - 1;
+            } else {
+                slideIndex = index;
+            }
+            slides.forEach((slide, i) => {
+                slide.classList.remove('active');
+                indicators[i].classList.remove('active');
+                if (i === slideIndex) {
+                    slide.classList.add('active');
+                    indicators[i].classList.add('active');
+                }
+            });
+        }
+
+        function moveCarousel(n) {
+            showSlide(slideIndex + n);
+        }
+
+        function currentSlide(n) {
+            showSlide(n);
+        }
+
+        function sideBar() {
+            document.querySelector('.sidebar').style.display = 'flex';
+        }
+
+        function hideside() {
+            document.querySelector('.sidebar').style.display = 'none';
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            showSlide(slideIndex);
+        });
+    </script>
+</body>
+
+</html>
